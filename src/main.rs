@@ -17,9 +17,7 @@ impl IntoUrl for Cli {
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let args = Cli::from_args();
-    let ur = Cli::into_url(args);
-    let resp = reqwest::blocking::get(ur)?
+    let resp = reqwest::blocking::get(Cli::into_url(Cli::from_args()))?
         .json::<HashMap<String, String>>()?;
     println!("{:#?}", resp);
     Ok(())
