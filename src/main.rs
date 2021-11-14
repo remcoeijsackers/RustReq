@@ -29,7 +29,7 @@ struct Rp {
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args = Cli::from_args();
     let ur = Cli::into_url(args);
-    let resp = reqwest::blocking::get(args)?
+    let resp = reqwest::blocking::get(ur)?
         .json::<HashMap<String, String>>()?;
     println!("{:#?}", resp);
     Ok(())
