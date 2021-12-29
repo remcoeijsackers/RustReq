@@ -10,3 +10,6 @@ tokio = { version = "1", features = ["full"] }
 reqwest = { version = "0.11", features = ["blocking", "json"] }
 structopt = { version = "0.3.13" }
 url = { version = "2.2.2" }
+futures = { version = "0.3" }
+serde_json = { version = "1.0.59" }
+serde_derive = { version = "1.0.132" }
