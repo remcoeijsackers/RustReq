@@ -1,15 +1,16 @@
 use std::io::Read;
+mod request;
+use request::mrequest;
+use request::prequest;
 
-
-fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let pattern = std::env::args().nth(1).expect("no website given");
-    let mut res = reqwest::blocking::get(pattern)?;
-    let mut body = String::new();
-    res.read_to_string(&mut body)?;
-
-    println!("Status: {}", res.status());
-    println!("Headers:\n{:#?}", res.headers());
-    println!("Body:\n{}", body);
-
-    Ok(())
+fn main() {
+    let reqtype = std::env::args().nth(1).expect("no request type / url given");
+    let pattern = std::env::args().nth(2).expect("no request type / url given");
+    let get = "get";
+    let post = "post";
+    let outcome = match reqtype{
+        get => mrequest(pattern),
+        post => prequest(pattern),
+    };
+    
 }
