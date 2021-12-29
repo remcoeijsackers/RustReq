@@ -1,24 +1,15 @@
-use std::collections::HashMap;
-use structopt::StructOpt;
+use std::io::Read;
 
-trait IntoUrl {
-    fn into_url(self) -> String;
-}
-
-#[derive(StructOpt)]
-#[derive(Debug)]
-struct Cli {
-    pub url: String,
-}
-
-impl IntoUrl for Cli {
-    fn into_url(self) -> String
-    {self.url}
-}
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let resp = reqwest::blocking::get(Cli::into_url(Cli::from_args()))?
-        .json::<HashMap<String, String>>()?;
-    println!("{:#?}", resp);
+    let pattern = std::env::args().nth(1).expect("no website given");
+    let mut res = reqwest::blocking::get(pattern)?;
+    let mut body = String::new();
+    res.read_to_string(&mut body)?;
+
+    println!("Status: {}", res.status());
+    println!("Headers:\n{:#?}", res.headers());
+    println!("Body:\n{}", body);
+
     Ok(())
 }
