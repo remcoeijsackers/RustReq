@@ -14,7 +14,7 @@ pub fn build_resobj(status: String, headers: String, resbody: String) -> resobj 
     }
 }
 
-pub fn mrequest(pattern:String) -> Result<resobj, Box<dyn std::error::Error>> {
+pub fn grequest(pattern:String) -> Result<resobj, Box<dyn std::error::Error>> {
     let pattern = pattern;
     let mut res = reqwest::blocking::get(pattern)?;
     let mut body = String::new();
@@ -26,10 +26,6 @@ pub fn mrequest(pattern:String) -> Result<resobj, Box<dyn std::error::Error>> {
     res.read_to_string(&mut hdr)?;
     
     let rsp = build_resobj(stcode, hdr, body);
-
-    //println!("Status: {}", res.status());
-    //println!("Headers:\n{:#?}", res.headers());
-    //println!("Body:\n{}", body);
 
     Ok(rsp)
 }
@@ -49,9 +45,14 @@ pub fn prequest(pattern:String) -> Result<resobj, Box<dyn std::error::Error>> {
     
     let rsp = build_resobj(stcode, hdr, body);
 
-    //println!("Status: {}", res.status());
-    //println!("Headers:\n{:#?}", res.headers());
-    //println!("Body:\n{}", body);
+    Ok(rsp)
+}
+
+pub fn mrequest() -> Result<resobj, Box<dyn std::error::Error>> {
+    let st = String::from("unkown request method");
+    let hd = String::from("");
+    let bd = String::from("");
+    let rsp = build_resobj(st, hd, bd);
 
     Ok(rsp)
 }

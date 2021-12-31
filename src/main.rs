@@ -1,25 +1,36 @@
-use std::io::Read;
 mod request;
-use request::mrequest;
+use request::grequest;
 use request::prequest;
+use request::mrequest;
 use request::resobj;
+mod util;
+use util::reqobj;
+use util::build_reqobj;
+ 
+pub fn rqesthandler(req: reqobj) -> Result<resobj,()> {
+    let dt: resobj;
+    let clone = req.clone();
 
-pub fn rqesthandler(reqtpe: String, pattern: String) -> resobj {
-    let dt: resobj = mrequest(pattern).unwrap();
-    println!("Status: {}", dt.status);
-    println!("Headers:\n{:#?}", dt.headers);
-    println!("Body:\n{}", dt.resbody);
-    return dt
+    match req.rtype.as_str(){
+        "get" => dt = grequest(req.rpattern).unwrap(),
+        "post" => dt = prequest(clone.rpattern).unwrap(),
+        _ => dt = mrequest().unwrap(),
+    }
+
+    Ok(dt)
 }
 
 fn main() {
-    let reqtype = std::env::args().nth(1).expect("no request type / url given");
+    let reqtype = String::from(std::env::args().nth(1).expect("no request type / url given"));
     let pattern = std::env::args().nth(2).expect("no request type / url given");
-    let get = "get";
-    let post = "post";
-    let outcome = match reqtype{
-        get => rqesthandler(get,pattern),
-        post => rqesthandler(post,pattern),
-    };
+
+    let req = build_reqobj(pattern, reqtype);
+    let outcome = rqesthandler(req).unwrap();
+
+    println!("Status: {}", outcome.status);
+    if outcome.headers != "" {
+        println!("Headers:\n{:#?}", outcome.headers);
+        println!("Body:\n{}", outcome.resbody);
+    }
     
 }
