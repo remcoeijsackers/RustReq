@@ -34,8 +34,6 @@ pub fn prequest(pattern:String) -> Result<resobj, Box<dyn std::error::Error>> {
     let pattern = pattern;
     let mut res = reqwest::blocking::get(pattern)?;
     let mut body = String::new();
-    res.read_to_string(&mut body)?;
-    let mut body = String::new();
     let mut stcode = String::new();
     let mut hdr = String::new();
     
