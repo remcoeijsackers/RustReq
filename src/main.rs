@@ -6,7 +6,7 @@ use request::resobj;
 mod util;
 use util::reqobj;
 use util::build_reqobj;
- 
+
 pub fn rqesthandler(req: reqobj) -> Result<resobj,()> {
     let dt: resobj;
     let clone = req.clone();
